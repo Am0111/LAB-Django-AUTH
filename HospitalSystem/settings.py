@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*e#z+2z^&9^--oo^1=zt7+)qm#g_a3fz=(nlcy*5$xfb&%$y*u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://lab-django-auth.onrender.com"]
 
 
 # Application definition
