@@ -1,0 +1,175 @@
+{% extends 'main/dashboard.html' %}
+
+
+{% block title %} Add New Clinic{% endblock %}
+
+{% block dashboard %}
+
+<div class="container">
+    <h2>Add Clinics</h2>
+    <div class="d-flex justify-content-evenly align-items-center mb-4">
+        
+        <form action="{% url 'clinics:all_clinics' %}" method="get" class="d-flex gap-3 w-70">
+            <select name="category" class="form-select w-70">
+                <option value="">Working Hours</option>
+                {% for value, label in working_hours %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="q" placeholder="Search doctor" class="form-control" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <button type="button" class="btn btn-success mb-3 " data-bs-toggle="modal" data-bs-target="#addModal">Add New Clinic</button>
+    </div>    
+
+
+    <table class="table table-responsive table-striped center-text-table">
+        <thead>
+            <tr>
+                <th>clinic Name</th>
+                <th>description </th>
+                <th>doctors </th>
+                <th>working hours </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for clinic in clinics %}
+            <tr>
+                <td>{{ clinic.name }}</td>
+                <td>{{ clinic.description }}</td>
+                <td>
+                {% for doctor in clinic.doctors.all %} 
+                    {{ doctor.full_name }} {% if not forloop.last%} , {%endif%}
+               {% endfor%}
+            </td>
+                
+
+                <td>{{ clinic.get_working_hours_display }}</td>
+                <td>
+                    <a href="{% url 'clinics:clinic_detail' clinic.id  %}" class="btn btn-outline-primary">Details</a>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#updateModal{{ clinic.id }}">Update</button>
+                    <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ clinic.id }}" >delete</button>
+                </td>
+            </tr>
+
+            <!-- Modal delete -->
+            <div class="modal fade" id="deleteModal-{{ clinic.id }}" tabindex="-1"
+                aria-labelledby="deleteModalLabel-{{ clinic.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel-{{ clinic.id }}">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete {{ clinic.name }}?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="{%url 'clinics:delete_clinic' clinic.id %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Update Modal -->
+            <div class="modal fade" id="updateModal{{ clinic.id }}" tabindex="-1" aria-labelledby="updateModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="updateModalLabel">Update clinic info </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="d-flex flex-column gap-2" action="{% url 'clinics:update_clinic' clinic.id %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                
+                                <!-- Full Name -->
+                                <input type="text" placeholder="Full Name" name="name" class="form-control mb-2" value="{{clinic.name}}" maxlength="100"/>
+                                
+                                <select name="working_hours" class="form-select mb-2" >
+                                    <option value="{{clinic.working_hours}}" selected>{{clinic.get_working_hours_display}}</option>
+                                    {% for value, label in working_hours %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <!-- Bio -->
+                                <textarea placeholder="description" name="description" class="form-control mb-2" >{{clinic.description}}</textarea>
+                                
+                                <!-- Photo -->
+                                <div class="mb-3">
+                                    <img src="{{ clinic.photo.url }}" alt="{{ clinic.name }}" class="img-thumbnail mt-2 mb-2" style="max-height: 130px;">
+                                    <input type="file" name="photo" class="form-control"  accept="image/*"/>
+
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    {% for doctor in doctors %}
+                                        <input type="checkbox" class="form-check-input" name="doctors" id="check-{{doctor.id}}" value="{{doctor.id}}" {% if doctor in clinic.doctors.all %} checked {% endif %} />
+                                        <label for="check-{{doctor.id}}">{{doctor.full_name}}</label>
+                                    {% endfor %}
+                                </div> 
+                                
+                                <!-- Submit Button -->
+                                <input type="submit" value="add clinic" class="btn btn-primary mt-4" />
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- add doctor modal -->
+
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add New clinic</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="d-flex flex-column gap-2" action="{% url 'clinics:add_clinic' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <input type="text" placeholder="Name" name="name" class="form-control" required maxlength="100"/>
+                        
+                        <select name="working_hours" class="form-select" required>
+                            <option value="" disabled selected>Choose working hours</option>
+                            {% for value, label in working_hours %}
+                                <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <textarea placeholder="description" name="description" class="form-control" required></textarea>
+                        
+                        <!-- Photo -->
+                        <input type="file" name="photo" class="form-control" required accept="image/*"/>
+
+                        <div class="d-flex align-items-center gap-2">
+                            {% for doctor in doctors %}
+                                <input type="checkbox" class="form-check-input" name="doctors" id="check-{{doctor.id}}" value="{{doctor.id}}" />
+                                <label for="check-{{doctor.id}}">{{doctor.full_name}}</label>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <input type="submit" value="Create clinic" class="btn btn-primary mt-4" />
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

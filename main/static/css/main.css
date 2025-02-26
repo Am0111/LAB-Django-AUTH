@@ -1,0 +1,129 @@
+
+* {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+h1 {
+    font-size: 4rem;
+    text-transform: capitalize;
+    
+}
+
+h1, h2 {
+
+    text-transform: capitalize;
+}
+
+.navbar-brand h2 {
+    font-family: "Ubuntu", sans-serif;
+}
+
+main {
+    min-height: 60vh;
+}
+
+body.dark  {
+    background-color: rgb(226, 226, 226);
+    color: rgb(0, 0, 0);
+}
+
+body.dark h1, body.dark h2, body.dark h3 {
+    color:rgb(55, 118, 174);
+} 
+
+
+body.dark hr {
+    background-color: rgb(115, 115, 115);
+}
+
+.odibee-sans-regular {
+    font-family: "Odibee Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+
+.bungee-regular {
+    font-family: "Bungee", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+
+p {
+    white-space:pre-line;
+}
+
+hr {
+    opacity: 1;
+    height: 1rem;
+    border: none;
+    background-color: rgb(230, 230, 230);
+    transform: skewX(-20deg);
+}
+
+.top-logo {
+    font-size: 2.2rem;
+    color: rgb(70, 140, 210);
+    transition: all 0.2s ease-in;
+}
+
+.top-logo:hover {
+
+    text-shadow: -0.2rem 0.1rem 0px rgb(9, 2, 13);
+}
+
+.vid-container video {
+    height: 100%;
+    max-height: 50vh;
+    margin-left: 0.4rem;
+}
+
+input[type="search"]{
+    border-radius: 0px !important;
+}
+
+
+.top-nav span {
+    padding:0.2rem;
+
+}
+
+.top-nav .active-icon {
+    background-color: white;
+    border-radius: 50%;
+    color:black;
+}
+
+
+.top-nav a {
+    padding: 0px !important;
+}
+
+
+.poster-thumb {
+    height: 400px;
+}
+
+
+a {
+    color:black;
+    text-decoration: none;
+    transition: all 0.1s ease-in;
+}
+
+a:hover {
+    color:rgb(0, 47, 255);
+    transition: all 0.15s ease-out;
+}
+
+.nav-link {
+    text-transform: capitalize;
+}
+
+.center-text-table td, .center-text-table th {
+    text-align: center;
+}
+

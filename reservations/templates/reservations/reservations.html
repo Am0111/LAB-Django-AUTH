@@ -1,0 +1,47 @@
+
+<h2>reservations for @{{user.username}}</h2>
+
+<div class="row m-3">
+    {% for reservation in user.reservation_set.all %}
+    <div class="col-sm-6 mb-3 mb-sm-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{reservation.date}} at {{reservation.clinic.name }} clinic</h5>
+                <p class="card-text ms-4">
+                    <span>time : {{reservation.time_slot}} </span>
+                    <span>clinic name : {{reservation.clinic.name}} </span>
+                    <span> with doctor : {{reservation.doctor.full_name}} </span>
+                </p>
+                <div class="d-flex justify-content-between">
+
+                    <p class="text-muted">reservied at {{reservation.created_at}} </p>
+                    <button class="btn btn-outline-danger" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal-{{ reservation.id }}">cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal delete -->
+    <div class="modal fade" id="deleteModal-{{ reservation.id }}" tabindex="-1"
+        aria-labelledby="deleteModalLabel-{{ reservation.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel-{{ reservation.id }}">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete reservation ({{reservation.date}} at {{reservation.clinic.name }} clinic )?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="{%url 'reservations:cancel_reservation' reservation.id %}" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
+</div>
+

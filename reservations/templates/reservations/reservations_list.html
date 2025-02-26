@@ -1,0 +1,25 @@
+{% extends 'main/base.html'%}
+
+
+{% block title %} {{user.username}} | profile {% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-around ">
+
+    <div class="col-12 text-end">
+
+        {% if request.user == user %}
+
+        <a href="{% url 'reservations:create_reservation' %}"><i class="bi bi-pencil-square"></i> make a reservation</a>
+        {% endif %}
+
+
+    </div>
+
+</div>
+
+{% include 'reservations/reservations.html' %}
+
+
+{% endblock %}

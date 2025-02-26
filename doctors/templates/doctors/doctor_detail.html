@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} {{ doctor.full_name }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="{{ doctor.photo.url }}" class="img-fluid" alt="{{ doctor.photo.url }}">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ doctor.full_name }}</h5>
+              <p class="card-text">{{ doctor.bio }}</p>
+              <p class="card-text"><small class="text-body-secondary"> {{ doctor.get_specialization_display }}</small></p>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+
+{%for clinic in  clinics%}
+
+<div class="row mt-2">
+  <div class="card mb-3">
+      <a href="{% url 'clinics:clinic_detail' clinic.id  %}">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="{{ clinic.photo.url }}" class="img-fluid" alt="{{ clinic.photo.url }}">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ clinic.name }}</h5>
+            <p class="card-text">{{ clinic.description }}</p>
+            <p class="card-text"><small class="text-body-secondary"> {{ clinic.get_working_hours_display}}</small></p>
+          </div>
+        </div>
+      </div>
+    </a>
+    </div>
+  </div>
+  
+{%endfor%}
+

@@ -1,0 +1,44 @@
+{% extends 'main/base.html' %}
+
+{% block title %} home {% endblock %}
+
+{% block content %}
+
+
+<div class="row   row-cols-1 row-cols-md-2 ">
+    <div class="col order-2 order-md-1 ">
+        <div class="d-flex flex-column h-100">
+            <h1 class="">Welcome to Hospital+ </h1>
+            <p class="">We are dedicated to providing the highest quality healthcare to our community.
+               Our team of experienced medical professionals are committed to delivering personalized care and support to our patients.</p>
+        </div>
+
+    </div>
+
+    <div class="col order-1 overflow-hidden hero h-100 p-0">
+        <div class="vid-container">
+          <video class="h-100 rounded-pill" src="/static/videos/backvid.mp4" muted autoplay loop></video>
+        </div>
+    </div>
+</div>
+
+<hr />
+<a href="{%url 'clinics:clinic_display'%}">
+<div class="d-flex align-items-center justify-content-between ">
+  <h2 class="m-0 p-0">our clinics</h2>
+  <span class="material-symbols-outlined text-fxl">arrow_forward</span>
+</div>
+</a>
+{%include 'clinics/clinics.html'%}
+<hr />
+<a href="{%url 'doctors:doctor_display'%}">
+<div class="d-flex align-items-center justify-content-between ">
+  <h2 class="m-0 p-0">our doctors</h2>
+  <span class="material-symbols-outlined text-fxl">arrow_forward</span>
+</div>
+</a>
+
+{%include 'doctors/doctors.html'%}
+
+
+{% endblock %}

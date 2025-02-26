@@ -1,0 +1,83 @@
+{% extends 'main/base.html' %}
+
+
+{% block title %} make a reservation{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'reservations:create_reservation' %}" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="doctorSelect" class="form-label">Doctor</label>
+        <select class="form-control" id="doctorSelect" name="doctor" required>
+            <option value="" disabled selected>Select a doctor</option>
+            {% for doctor in doctors %}
+            <option value="{{ doctor.id }}">{{ doctor.full_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="clinicSelect" class="form-label">Clinic</label>
+        <select class="form-control" id="clinicSelect" name="clinic" required>
+            <option value="" disabled selected>Select a clinic</option>
+            {% for clinic in clinics %}
+            <option value="{{ clinic.id }}" data-working-hours="{{ clinic.working_hours }}">{{ clinic.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="dateInput" class="form-label">Date</label>
+        <input type="date" class="form-control" id="dateInput" name="date" required>
+    </div>
+    <div class="mb-3">
+        <label for="timeInput" class="form-label">Time</label>
+        <select class="form-control" id="timeInput" name="time_slot" required>
+            <option value="" disabled selected>Select a time slot</option>
+            <!-- will load from js based on data-working-hours -->
+        </select>
+    </div>
+    <div class="mb-3">
+        <input type="submit" value="Make Reservation" class="btn btn-primary">
+    </div>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const clinicSelect = document.getElementById("clinicSelect");
+        const timeInput = document.getElementById("timeInput");
+
+        clinicSelect.addEventListener("change", function () {
+            const selectedClinic = clinicSelect.options[clinicSelect.selectedIndex];
+            const workingHours = selectedClinic.getAttribute("data-working-hours");
+
+            timeInput.innerHTML = '<option value="" disabled selected>Select a time slot</option>';
+
+            if (workingHours === '08:00-12:00') {
+                addOption(timeInput, '08:00', '08:00 AM');
+                addOption(timeInput, '09:00', '09:00 AM');
+                addOption(timeInput, '10:00', '10:00 AM');
+                addOption(timeInput, '11:00', '11:00 AM');
+            } else if (workingHours === '12:00-16:00') {
+                addOption(timeInput, '12:00', '12:00 PM');
+                addOption(timeInput, '13:00', '1:00 PM');
+                addOption(timeInput, '14:00', '2:00 PM');
+                addOption(timeInput, '15:00', '3:00 PM');
+            } else if (workingHours === '16:00-20:00') {
+                addOption(timeInput, '16:00', '4:00 PM');
+                addOption(timeInput, '17:00', '5:00 PM');
+                addOption(timeInput, '18:00', '6:00 PM');
+                addOption(timeInput, '19:00', '7:00 PM');
+            }
+        });
+
+        function addOption(selectElement, value, text) {
+            const option = document.createElement("option");
+            option.value = value;
+            option.text = text;
+            selectElement.add(option);
+        }
+    });
+</script>
+
+
+{% endblock %}
